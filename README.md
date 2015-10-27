@@ -10,6 +10,8 @@ Requirements
  * dom
  * gettext
  * hash
+ * json
+ * ctype
  * session
  * soap
  * ldap
