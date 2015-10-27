@@ -8,8 +8,9 @@
 		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css?v=3.4-r1-rocky-amd64">
+		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{$styles}">
+		<link rel="search" type="application/opensearchdescription+xml" href="?page=opensearch" title="{$pagename|escape}">
 		<script src="static/js/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -41,7 +42,7 @@
 							<li class="bwlist{if $page_active=="spam"} active{/if}"><a href="?page=spam"><i class="fa fa-cog"></i>&nbsp;{t}Spam settings{/t}</a></li>
 						{/if}
 						{if $feature_stats}
-							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Stats{/t}</a></li>
+							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">

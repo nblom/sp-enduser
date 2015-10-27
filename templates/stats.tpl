@@ -1,11 +1,12 @@
-{include file='header.tpl' title='Statistics' page_active='stats'}
+{capture assign="title"}{t}Statistics{/t}{/capture}
+{include file='header.tpl' title=$title page_active='stats'}
 <div class="container" id="panel-container">
 	<div class="btn-group">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-			Add chart <span class="caret"></span>
+			{t}Add...{/t} <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="#" class="add-all">All</a></li>
+			<li><a href="#" class="add-all">{t}All{/t}</a></li>
 			<li class="divider"></li>
 			{foreach $domains as $domain}
 				<li><a href="#" data-domain="{$domain}" class="add-domain">{$domain}</a></li>
@@ -14,7 +15,7 @@
 	</div>
 	{if count($domains) > 5}
 	<span class="text-muted pull-right many-domains">
-		Because you have more than 5 domains, you need to choose them specifically.
+		{t}Because you have more than 5 domains, you need to choose them specifically.{/t}
 	</span>
 	{/if}
 	<br><br>
@@ -31,7 +32,7 @@
 				<div class="realrrd" style="height:200px"></div>
 			</div><div class="col-md-6">
 				<div class="pie" style="height:200px"></div>
-				<div class="since text-muted pull-right">Loading...</div>
+				<div class="since text-muted pull-right">{t}Loading...{/t}</div>
 			</div></div>
 		</div>
 	</div>

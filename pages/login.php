@@ -88,7 +88,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 					$statement->execute(array(':username' => $username));
 				$row = $statement->fetch(PDO::FETCH_ASSOC);
-				if (!$row || $row['password'] !== crypt($password, $row['password']))
+				if (!$row || !password_verify($password, $row['password']))
 					break;
 
 				$_SESSION['username'] = $row['username'];

@@ -30,7 +30,7 @@ function history_parse_scores($mail)
 			$res = 'Ok';
 			if ($text)
 				$res = 'Virus';
-			$ret['kav']['name'] = 'Kaspersky';
+			$ret['kav']['name'] = 'Sophos';
 			$ret['kav']['score'] = $res;
 			$ret['kav']['text'] = $text;
 		}
@@ -72,7 +72,7 @@ function history_parse_scores($mail)
 			$ret['sa']['text'] = implode(', ', $sas);
 		}
 		if ($scores['kav'] !== null) {
-			$ret['kav']['name'] = 'Kaspersky';
+			$ret['kav']['name'] = 'Sophos';
 			$viruses = $scores['kav'];
 			if (is_array($viruses)) {
 				$ret['kav']['score'] = 'Virus';

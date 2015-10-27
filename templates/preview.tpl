@@ -126,8 +126,8 @@
 					<ul class="list-inline">
 						{foreach $attachments as $attachment}
 							<li class="nowrap">
-								<i class="fa fa-paperclip"></i>
-								{$attachment.2|escape}&nbsp;<small class="text-muted">({$attachment.1|format_size})</small>
+								<i class="fa fa-{$attachment.icon}"></i>
+								{$attachment.name|escape}&nbsp;<small class="text-muted">({$attachment.size|format_size})</small>
 							</li>
 						{/foreach}
 					</ul>

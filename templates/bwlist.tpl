@@ -1,11 +1,4 @@
 {include file='header.tpl' title='Black/whitelist' page_active='bwlist'}
-{if $error}
-<div class="container-fluid">
-	<div class="alert alert-danger" role="alert">
-		{t}You are not allowed to add a black/whitelist entry for that recipient.{/t}
-	</div>
-</div>
-{/if}
 <div class="container-fluid">
 	<div class="col-md-6 col-lg-8">
 		<div class="panel panel-default">
@@ -61,7 +54,7 @@
 									</p>
 								</td>
 								<td style="vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{foreach $accesses as $access}
@@ -80,7 +73,7 @@
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for 1 recipient?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$access|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for 1 recipient?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={$access|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{/foreach}
@@ -100,7 +93,7 @@
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$accesses.0|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={$accesses.0|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 						{/if}
@@ -138,11 +131,11 @@
 				<h3 class="panel-title">{t}Add...{/t}</h3>
 			</div>
 			<div class="panel-body">
-				<form class="form-horizontal" action="?page=bwlist&list=add" method="post">
+				<form class="form-horizontal" id="bwlist_add">
 					<div class="form-group">
 						<label for="type" class="control-label col-md-3">{t}Action{/t}</label>
 						<div class="col-md-9">
-							<select name="type" class="form-control">
+							<select id="type" class="form-control">
 								<option value="blacklist">{t}Blacklist{/t}</option>
 								<option value="whitelist">{t}Whitelist{/t}</option>
 							</select>
@@ -151,14 +144,14 @@
 					<div class="form-group">
 						<label class="control-label col-md-3">{t}Sender{/t}</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" name="value">
+							<input type="text" class="form-control" id="value">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3" style="white-space: nowrap;">{t}For recipient{/t}</label>
 						<div class="col-md-9">
 							{if count($useraccess) == 1}
-								<input type="hidden" class="form-control" name="access[]" value="{$useraccess.0|escape}">
+								<input type="hidden" class="form-control recipient" value="{$useraccess.0|escape}">
 								<p class="form-control-static">{$useraccess.0|escape}</p>
 							{elseif count($useraccess) > 0}
 								<button id="check-all" class="btn btn-info">{t}Select all{/t}</button>
@@ -168,13 +161,13 @@
 								{foreach $useraccess as $a}
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" class="recipient" name="access[]" value="{$a|escape}"> {$a|escape}
+										<input type="checkbox" class="recipient" value="{$a|escape}"> {$a|escape}
 									</label>
 								</div>
 								{/foreach}
 								{if count($useraccess) > 5}</div>{/if}
 							{else}
-								<input type="text" class="form-control" name="access[]" placeholder="{t}everyone{/t}">
+								<input type="text" class="form-control recipient" placeholder="{t}everyone{/t}">
 							{/if}
 							<p class="help-block">
 								{t}Sender may be an IP address, an e-mail address, a domain name or a wildcard domain name starting with a dot (eg. .co.uk).{/t}

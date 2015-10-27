@@ -1,4 +1,5 @@
-{include file='header.tpl' title='Account' page_active='user'}
+{capture assign="title"}{t}Account{/t}{/capture}
+{include file='header.tpl' title=$title page_active='user'}
 <div class="container">
 	<div class="col-md-6">
 		<div class="panel panel-default">

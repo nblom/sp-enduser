@@ -18,3 +18,15 @@ require_once BASE.'/vendor/autoload.php';
 
 // Conveniently access the Settings instance as $settings
 $settings = Settings::Get();
+
+// Implement password_X if they don't exist (PHP < 5.5)
+if (!function_exists('password_verify')) {
+	function password_verify($password, $hash) {
+		return ($hash === crypt($password, $hash));
+	}
+}
+if (!function_exists('password_hash')) {
+	function password_hash($password, $ignored) {
+		return crypt($password);
+	}
+}

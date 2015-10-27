@@ -20,7 +20,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	$statement->execute(array(':username' => $recipient));
 	if (!$statement->fetch(PDO::FETCH_ASSOC)) {
 
-		$password = crypt(generate_random_password());
+		$password = password_hash(generate_random_password(), PASSWORD_DEFAULT);
 
 		$token = uniqid();
 		$publictoken = hash_hmac('sha256', $password, $token);

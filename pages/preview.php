@@ -104,7 +104,11 @@ if ($type == 'queue') {
 		$purifier = new HTMLPurifier($config);
 		$header = $result['HEADERS'];
 		$headerdelta = $result['HEADERS-DELTA'];
-		$attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
+		require_once 'inc/utils/extension.inc.php';
+		$attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) {
+				$l = explode('|', $k);
+				return array('type' => $l[0], 'size' => $l[1], 'name' => $l[2], 'icon' => extension_icon($l[2]));
+				}, explode("\n", $result['ATTACHMENTS'])) : array();
 
 		$body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
 		$body = trim($purifier->purify($body));

@@ -26,7 +26,7 @@ if ($_GET['list'] == 'delete') {
 		$statement = $dbh->prepare("DELETE FROM spamsettings WHERE access = :access;");
 		$statement->execute(array(':access' => $a));
 	}
-	header("Location: ?page=spam");
+	header("Location: ?page=spam&limit=".intval($_GET['limit']).'&offset='.intval($_GET['offset']));
 	die();
 }
 
@@ -34,20 +34,29 @@ $spamsettings = array();
 $spamsettings['level'] = $_POST['level'];
 
 if ($_GET['list'] == 'add') {
+	header('Content-Type: application/json; charset=UTF-8');
+
+	$added = false;
 	foreach ($_POST['access'] as $access)
 	{
-		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
-		if ($spamsettings['level'] == '') die('You need to select a level.');
-		if ($access[0] == '@') $access = substr($access, 1);
-		if (!checkAccess($access)) {
-			header("Location: ?page=spam&error=perm");
-			die();
-		}
+		if ($spamsettings['level'] == '')
+			die(json_encode(array('error' => 'syntax', 'field' => 'level', 'reason' => 'No level selected')));
+		if (strpos($access, ' ') !== false)
+			die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'Field contained whitespace')));
+
+		if ($access[0] == '@')
+			$access = substr($access, 1);
+
+		if (!checkAccess($access))
+			die(json_encode(array('error' => 'permission', 'value' => $access)));
+
 		$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
 		$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
+		$added = true;
 	}
-	header("Location: ?page=spam");
-	die();
+	if (!$added)
+		die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'No recipients')));
+	die(json_encode(array('status' => 'ok')));
 }
 
 $edit = null;
@@ -160,14 +169,10 @@ if ($total) {
 	}
 }
 
-if ($_GET['error'] == 'perm')
-	$error = true;
-
 $javascript[] = 'static/js/bwlist.js';
 
 require_once BASE.'/inc/smarty.php';
 
-if ($error) $smarty->assign('error', $error);
 if ($search) $smarty->assign('search', $search);
 if ($edit) $smarty->assign('edit', $edit);
 $access = array();

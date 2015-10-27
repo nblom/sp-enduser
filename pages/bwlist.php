@@ -26,28 +26,42 @@ if ($_GET['list'] == 'delete') {
 		$statement = $dbh->prepare("DELETE FROM bwlist WHERE access = :access AND bwlist.type = :type AND bwlist.value = :value;");
 		$statement->execute(array(':access' => $a, ':type' => $_GET['type'], ':value' => $_GET['value']));
 	}
-	header("Location: ?page=bwlist");
+	header("Location: ?page=bwlist&limit=".intval($_GET['limit']).'&offset='.intval($_GET['offset']));
 	die();
 }
 
 if ($_GET['list'] == 'add') {
+	header('Content-Type: application/json; charset=UTF-8');
+
+	$value = strtolower(trim($_POST['value']));
+	if ($value[0] == '@') $value = substr($value, 1);
+
+	$type = $_POST['type'];
+
+	$added = false;
 	foreach ($_POST['access'] as $access)
 	{
-		if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
-		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
-		if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
-		if ($access[0] == '@') $access = substr($access, 1);
-		if (!checkAccess($access)) {
-			header("Location: ?page=bwlist&error=perm");
-			die();
-		}
-		if ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist') {
+		if (strpos($value, ' ') !== false)
+			die(json_encode(array('error' => 'syntax', 'field' => 'value', 'reason' => 'Field contained whitespace')));
+		if (strpos($access, ' ') !== false)
+			die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'Field contained whitespace')));
+
+		if ($access[0] == '@')
+			$access = substr($access, 1);
+
+		if (!checkAccess($access))
+			die(json_encode(array('error' => 'permission', 'value' => $access)));
+
+		if ($type == 'whitelist' || $type == 'blacklist') {
 			$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-			$statement->execute(array(':access' => strtolower($access), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
-		}
+			$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value));
+			$added = true;
+		} else
+			die(json_encode(array('error' => 'syntax', 'field' => 'type', 'reason' => 'Type not black or whitelist')));
 	}
-	header("Location: ?page=bwlist");
-	die();
+	if (!$added)
+		die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'No recipients')));
+	die(json_encode(array('status' => 'ok')));
 }
 
 $result = array();
@@ -136,14 +150,10 @@ $result2 = array();
 foreach ($result as $row)
 	$result2[$row['type']][$row['value']][] = $row['access'];
 
-if ($_GET['error'] == 'perm')
-	$error = true;
-
 $javascript[] = 'static/js/bwlist.js';
 
 require_once BASE.'/inc/smarty.php';
 
-if ($error) $smarty->assign('error', $error);
 if ($search) $smarty->assign('search', $search);
 $access = array();
 foreach (Session::Get()->getAccess() as $a)

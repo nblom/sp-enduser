@@ -20,13 +20,13 @@ function do_change_password()
 	$statement->execute(array(':username' => Session::Get()->getUsername()));
 	$row = $statement->fetch(PDO::FETCH_ASSOC);
 	
-	if (!$row || $row['password'] !== crypt($_POST['old_password'], $row['password'])) {
+	if (!$row || !password_verify($_POST['old_password'], $row['password'])) {
 		$error = "Your old password is incorrect!";
 		return;
 	}
 	
 	$statement = $dbh->prepare("UPDATE users SET password = :password WHERE username = :username;");
-	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => crypt($_POST['password'])));
+	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => password_hash($_POST['password'], PASSWORD_DEFAULT)));
 	$changedPassword = true;
 }
 

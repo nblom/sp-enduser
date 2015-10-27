@@ -10,13 +10,6 @@
 {capture assign="level"}{t}High{/t}{/capture}
 {$levels['high'] = $level}
 
-{if $error}
-<div class="container-fluid">
-	<div class="alert alert-danger" role="alert">
-		{t}You are not allowed to add a spam settings entry for that recipient{/t}
-	</div>
-</div>
-{/if}
 <div class="container-fluid">
 	<div class="col-md-6 col-lg-8">
 		<div class="panel panel-default">
@@ -71,7 +64,7 @@
 							<a href="{$edit_url}"><i class="fa fa-pencil-square-o"></i></a>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
-							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&access={$item.access|urlencode}"><i class="fa fa-remove"></i></a>
+							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&limit={$limit}&offset={$offset}&access={$item.access|urlencode}"><i class="fa fa-remove"></i></a>
 						</td>
 					</tr>
 				{foreachelse}
@@ -107,11 +100,12 @@
 				<h3 class="panel-title">{if $edit}{t}Edit{/t}{else}{t}Add...{/t}{/if}</h3>
 			</div>
 			<div class="panel-body">
-				<form class="form-horizontal" action="?page=spam&list={if $edit}edit{else}add{/if}" method="post">
+				<form class="form-horizontal" id="spam_add">
+					<input type="hidden" id="action" value="{if $edit}edit{else}add{/if}">
 					<div class="form-group">
 						<label for="type" class="control-label col-md-3">{t}Level{/t}</label>
 						<div class="col-md-9">
-							<select name="level" class="form-control">
+							<select id="level" class="form-control">
 								<option value="">{t}Select level{/t}</option>
 								{html_options options=$levels selected=$edit.settings->level}
 							</select>
@@ -121,11 +115,11 @@
 						<label class="control-label col-md-3" style="white-space: nowrap;">{t}For recipient{/t}</label>
 						<div class="col-md-9">
 							{if $edit}
-								<input type="hidden" class="form-control" name="access[]" value="{$edit.access|escape}">
+								<input type="hidden" class="form-control recipient" value="{$edit.access|escape}">
 								<p class="form-control-static">{if $edit.access}{$edit.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</p>
 							{else}
 								{if count($useraccess) == 1}
-									<input type="hidden" class="form-control" name="access[]" value="{$useraccess.0|escape}">
+									<input type="hidden" class="form-control recipient" value="{$useraccess.0|escape}">
 									<p class="form-control-static">{$useraccess.0|escape}</p>
 								{elseif count($useraccess) > 0}
 									<button id="check-all" class="btn btn-info">{t}Select all{/t}</button>
@@ -135,13 +129,13 @@
 									{foreach $useraccess as $a}
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" class="recipient" name="access[]" value="{$a|escape}"> {$a|escape}
+											<input type="checkbox" class="recipient" value="{$a|escape}"> {$a|escape}
 										</label>
 									</div>
 									{/foreach}
 									{if count($useraccess) > 5}</div>{/if}
 								{else}
-									<input type="text" class="form-control" name="access[]" placeholder="{t}everyone{/t}">
+									<input type="text" class="form-control recipient" placeholder="{t}everyone{/t}">
 								{/if}
 							{/if}
 						</div>

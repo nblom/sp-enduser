@@ -144,7 +144,7 @@
 						{/if}
 					</td>
 					<td {$mail.td} class="nopad">
-						<span class="fa-stack" style="font-size:12px;">
+						<span class="fa-stack" style="font-size:12px;" title="{$mail.mail->msgaction}">
 							<i class="fa fa-square fa-stack-2x" style="color: {$mail.action_color};"></i>
 							<i class="fa fa-lg fa-{$mail.action_icon} fa-stack-1x" style="color:#fff;"></i>
 						</span>

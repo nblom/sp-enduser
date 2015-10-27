@@ -50,7 +50,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 		$error = $error2;
 	if (!isset($error)) {	
 		$statement = $dbh->prepare("UPDATE users SET password = :password, reset_password_token = NULL, reset_password_timestamp = NULL WHERE username = :username;");
-		$statement->execute(array(':username' => $_POST['reset'], ':password' => crypt($_POST['password'])));
+		$statement->execute(array(':username' => $_POST['reset'], ':password' => password_hash($_POST['password'], PASSWORD_DEFAULT)));
 		$reset = true;
 	}
 }

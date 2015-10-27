@@ -178,6 +178,27 @@ msgstr "Koden"
 msgid "IP"
 msgstr "IP"
 
+#: templates/stats.tpl:1
+msgid "Statistics"
+msgstr "Statistik"
+
+#: templates/bwlist.tpl:138
+msgid "Add..."
+msgstr "Lägg till..."
+
+#: templates/index.tpl:22 templates/index.tpl:46
+msgid "All"
+msgstr "Alla"
+
+#: templates/stats.tpl:18
+msgid ""
+"Because you have more than 5 domains, you need to choose them specifically."
+msgstr "Eftersom du har fler än 5 domäner måste du lägga till dom manuellt."
+
+#: templates/stats.tpl:35
+msgid "Loading..."
+msgstr "Laddar..."
+
 #: templates/header.tpl:35
 msgid "Messages"
 msgstr "Meddelanden"
@@ -189,10 +210,6 @@ msgstr "Svart- och vitlista"
 #: templates/header.tpl:40 templates/spam.tpl:14
 msgid "Spam settings"
 msgstr "Spaminställningar"
-
-#: templates/header.tpl:40
-msgid "Stats"
-msgstr "Statistik"
 
 #: templates/header.tpl:45
 msgid "Sign out"
@@ -209,10 +226,6 @@ msgstr "Kö"
 #: templates/index.tpl:21 templates/index.tpl:45
 msgid "Quarantine"
 msgstr "Karantän"
-
-#: templates/index.tpl:22 templates/index.tpl:46
-msgid "All"
-msgstr "Alla"
 
 #: templates/bwlist.tpl:25
 msgid "Search for..."
@@ -312,12 +325,6 @@ msgstr "innehåller"
 msgid "Close"
 msgstr "Stäng"
 
-#: templates/bwlist.tpl:5
-msgid "You are not allowed to add a black/whitelist entry for that recipient."
-msgstr ""
-"Du har inte rättigheter att lägga till svart- och vitlistor för den "
-"mottagaren."
-
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"
 msgstr "Avsändare"
@@ -355,10 +362,6 @@ msgstr "Föregående"
 msgid "Next"
 msgstr "Nästa"
 
-#: templates/bwlist.tpl:138
-msgid "Add..."
-msgstr "Lägg till..."
-
 #: templates/bwlist.tpl:164
 msgid "Select all"
 msgstr "Markera alla"
@@ -378,6 +381,10 @@ msgstr ""
 #: templates/bwlist.tpl:185
 msgid "Add"
 msgstr "Lägg till"
+
+#: templates/user.tpl:1
+msgid "Account"
+msgstr "Konto"
 
 #: templates/user.tpl:6
 msgid "Permissions"
@@ -463,11 +470,6 @@ msgstr "Mellan"
 msgid "High"
 msgstr "Hög"
 
-#: templates/spam.tpl:5
-msgid "You are not allowed to add a spam settings entry for that recipient"
-msgstr ""
-"Du har inte rättigheter att ändra spaminställningar för den mottagaren."
-
 #: templates/spam.tpl:48 templates/spam.tpl:112
 msgid "Level"
 msgstr "Nivå"
@@ -492,10 +494,7 @@ msgstr "Spara"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/forgot.mail.tpl:3
-msgid ""
-"You have requested to reset your password on <a href=\"%1\">%1</a>. Click "
-"the link to reset your password."
+#: templates/spam.tpl:5
+msgid "You are not allowed to add a spam settings entry for that recipient"
 msgstr ""
-"Du har begärt att återställa lösenordet för <a href=\"%1\">%1</a>. Klicka på "
-"länken nedan för att återställa ditt lösenord."
+"Du har inte rättigheter att ändra spaminställningar för den mottagaren."
