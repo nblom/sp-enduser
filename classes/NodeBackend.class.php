@@ -225,16 +225,16 @@ class NodeBackend extends Backend
 		if (is_array($access['server'])) {
 			foreach ($access['server'] as $server) {
 				if ($filter != "")
-					$filter .= " or ";
-				$filter .= str_replace(array('{from}', '{to}'), array("server=$server", "server=$server"), $pattern);
+					$filter .= " and ";
+				$filter .= "server=$server";
 			}
 		}
 		
 		if (is_array($access['transport'])) {
 			foreach ($access['transport'] as $transport) {
 				if ($filter != "")
-					$filter .= " or ";
-				$filter .= str_replace(array('{from}', '{to}'), array("transport=$transport", "transport=$transport"), $pattern);
+					$filter .= " and ";
+				$filter .= "transport=$transport";
 			}
 		}
 		return $globalfilter.($globalfilter?" && ":"").$filter;
