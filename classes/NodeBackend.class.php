@@ -221,6 +221,22 @@ class NodeBackend extends Backend
 				$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
 			}
 		}
+		
+		if (is_array($access['server'])) {
+			foreach ($access['server'] as $server) {
+				if ($filter != "")
+					$filter .= " or ";
+				$filter .= str_replace(array('{from}', '{to}'), array("server=$server", "server=$server"), $pattern);
+			}
+		}
+		
+		if (is_array($access['transport'])) {
+			foreach ($access['transport'] as $transport) {
+				if ($filter != "")
+					$filter .= " or ";
+				$filter .= str_replace(array('{from}', '{to}'), array("transport=$transport", "transport=$transport"), $pattern);
+			}
+		}
 		return $globalfilter.($globalfilter?" && ":"").$filter;
 	}
 }
