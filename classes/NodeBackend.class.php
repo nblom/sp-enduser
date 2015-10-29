@@ -222,10 +222,16 @@ class NodeBackend extends Backend
 			}
 		}
 		
+		// For server and transport access note that only one statement will be used.
+		// For example, if you give access to one domain and one server it will use:
+		// domain or server. so it will show all emails to the domain, and all emails on that server.
+		// needs some work to allow access only to one domain and one or more servers.
+		// the same applies to transport.
+		
 		if (is_array($access['server'])) {
 			foreach ($access['server'] as $server) {
 				if ($filter != "")
-					$filter .= " and ";
+					$filter .= " or ";
 				$filter .= "server=$server";
 			}
 		}
@@ -233,7 +239,7 @@ class NodeBackend extends Backend
 		if (is_array($access['transport'])) {
 			foreach ($access['transport'] as $transport) {
 				if ($filter != "")
-					$filter .= " and ";
+					$filter .= " or ";
 				$filter .= "transport=$transport";
 			}
 		}
